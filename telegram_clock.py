@@ -1,36 +1,41 @@
 import os
-import shutil
 import asyncio
 from datetime import datetime, timezone, timedelta
 from telethon import TelegramClient
+from telethon.sessions import StringSession
 from flask import Flask
 from threading import Thread
-API_ID = int(os.environ.get("API_ID", "0"))
-API_HASH = os.environ.get("API_HASH", "")
-YOUR_NAME = os.environ.get("YOUR_NAME", "Name")
+
+API_ID = int(os.environ.get("API_ID", "34428389"))
+API_HASH = os.environ.get("API_HASH", "7a4cb67b39002b4b4b2a93597d5e5e8c")
+YOUR_NAME = os.environ.get("YOUR_NAME", "Mohammad Reza")
 TIMEZONE_OFFSET = int(os.environ.get("TZ_OFFSET", "3"))
-# Copy session file from Render secret location to working directory
-secret_path = "/etc/secrets/clock_session.session"
-local_path = "clock_session.session"
-if os.path.exists(secret_path) and not os.path.exists(local_path):
-    shutil.copy(secret_path, local_path)
-    print("Copied session file from secrets")
+SESSION_STRING = os.environ.get("SESSION_STRING", "1BJWap1sBuy6zw_wQL6AnqKneE6wKo5bAoD2F9oTv78KslRZcmefDG6ecVLRDvTQsJIRK4B6-N6ZXi8yq7FD_vGNFUJyfhMR_NQXgXHmEpgjLPKzZP9hjqM1w-2HWEyHsjKn4MlWXIaYmGeleVRMejLRjKPP8uCRZOVpS1Lp7aiuB_BKXgfM3IJgkvxm_WGTAcjIFRJkXysuIxDHLbmB9uY1Qiz17FxrO7MWIgZYZ7Xdk0rPbcXO69yMfgOQXPEIRg1Sh-ywP8Ym8rWDrU47PMF4142CWpblqqHmM8BhYpQaPWNmEMqhsuU_BKgHXBKqK0lj-ywzJDXb9CcEEsmFbmx6p1hJ62Uc=")
+
 # Flask keep-alive server
 web = Flask(__name__)
+
 @web.route("/")
 def home():
     return "Clock bot is running!"
+
 @web.route("/health")
 def health():
     return "ok"
+
 def run_web():
     web.run(host="0.0.0.0", port=10000)
+
 Thread(target=run_web, daemon=True).start()
+
 # Telegram clock
 tz = timezone(timedelta(hours=TIMEZONE_OFFSET))
-client = TelegramClient("clock_session", API_ID, API_HASH)
+client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
+
 async def main():
     await client.start()
+    me = await client.get_me()
+    print(f"Logged in as: {me.first_name}")
     print(f"Clock running for {YOUR_NAME}")
     while True:
         now = datetime.now(tz).strftime("%H:%M")
@@ -42,4 +47,5 @@ async def main():
             await asyncio.sleep(10)
             continue
         await asyncio.sleep(60)
+
 asyncio.run(main())
