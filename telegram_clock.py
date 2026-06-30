@@ -40,7 +40,7 @@ async def main():
     while True:
         now = datetime.now(tz).strftime("%H:%M")
         try:
-        await client(UpdateProfileRequest(first_name=f"{YOUR_NAME} 🕐{now}"))
+            await client(UpdateProfileRequest(first_name=f"{YOUR_NAME} 🕐{now}"))
             print(f"Updated: {now}", flush=True)
         except Exception as e:
             print(f"Error: {e}", flush=True)
