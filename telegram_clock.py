@@ -10,7 +10,7 @@ from threading import Thread
 print("Script starting...", flush=True)
 API_ID = int(os.environ.get("API_ID", "34428389"))
 API_HASH = os.environ.get("API_HASH", "7a4cb67b39002b4b4b2a93597d5e5e8c")
-YOUR_NAME = os.environ.get("YOUR_NAME", "𝑴𝒐𝒉𝒂𝒎𝒎𝒂𝒅𝑹𝒆𝒛𝒂")
+YOUR_NAME = "𝑴𝒐𝒉𝒂𝒎𝒎𝒂𝒅𝑹𝒆𝒛𝒂"
 SESSION_STRING = os.environ.get("SESSION_STRING", "")
 print(f"API_ID: {API_ID}", flush=True)
 print(f"YOUR_NAME: {YOUR_NAME}", flush=True)
