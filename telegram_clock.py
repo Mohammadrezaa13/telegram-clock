@@ -3,6 +3,7 @@ import sys
 import asyncio
 from datetime import datetime, timezone, timedelta
 from telethon import TelegramClient
+from telethon.tl.functions.account import UpdateProfileRequest
 from telethon.sessions import StringSession
 from flask import Flask
 from threading import Thread
@@ -39,7 +40,7 @@ async def main():
     while True:
         now = datetime.now(tz).strftime("%H:%M")
         try:
-            await client.update_profile(first_name=f"{YOUR_NAME} 🕐{now}")
+        await client(UpdateProfileRequest(first_name=f"{YOUR_NAME} 🕐{now}"))
             print(f"Updated: {now}", flush=True)
         except Exception as e:
             print(f"Error: {e}", flush=True)
