@@ -29,7 +29,7 @@ def run_web():
 Thread(target=run_web, daemon=True).start()
 
 # Telegram clock
-tz = timezone(timedelta(hours=TIMEZONE_OFFSET))
+tz = timezone(timedelta(hours=3, minutes=30))
 client = TelegramClient(StringSession(SESSION_STRING), API_ID, API_HASH)
 
 async def main():
