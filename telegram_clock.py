@@ -27,6 +27,15 @@ def run_web():
     web.run(host="0.0.0.0", port=10000)
 Thread(target=run_web, daemon=True).start()
 print("Flask started", flush=True)
+def bold_time(time_str):
+    bold_digits = "𝟎𝟏𝟐𝟑𝟒𝟓𝟔𝟕𝟖𝟗"
+    result = ""
+    for ch in time_str:
+        if ch.isdigit():
+            result += bold_digits[int(ch)]
+        else:
+            result += ch
+    return result
 # Telegram clock
 tz = timezone(timedelta(hours=3, minutes=30))
 async def main():
@@ -38,7 +47,7 @@ async def main():
     print(f"Logged in as: {me.first_name}", flush=True)
     print(f"Clock running for {YOUR_NAME}", flush=True)
     while True:
-        now = datetime.now(tz).strftime("%H:%M")
+        now = bold_time(datetime.now(tz).strftime("%H:%M"))
         try:
             await client(UpdateProfileRequest(first_name=f"{YOUR_NAME} {now}"))
             print(f"Updated: {now}", flush=True)
